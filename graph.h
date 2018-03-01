@@ -15,7 +15,7 @@ struct adjlist{
 
 struct graph{
     int n;
-    struct adjlist *adjListArr; /*its size will be the number of vertices in graph*/
+    struct adjlist *adjlistArr; /*its size will be the number of vertices in graph*/
 };
 
 
@@ -37,14 +37,14 @@ struct graph* createGraph(int n){
     graph->n = n;
 
     /* Create an array of adjacency lists*/
-    graph->adjListArr = (struct adjlist *)malloc(n * sizeof(struct adjlist));
-    if(!graph->adjListArr)
+    graph->adjlistArr = (struct adjlist *)malloc(n * sizeof(struct adjlist));
+    if(!graph->adjlistArr)
         printf("Unable to allocate memory for adjacency list array");
 
     for(int i = 0; i < n; i++)
     {
-        graph->adjListArr[i].head = NULL;
-        graph->adjListArr[i].num_members = 0;
+        graph->adjlistArr[i].head = NULL;
+        graph->adjlistArr[i].num_members = 0;
     }
 
     return graph;
@@ -53,21 +53,21 @@ struct graph* createGraph(int n){
 void destroyGraph(struct graph *graph){
     if(graph)
     {
-        if(graph->adjListArr)
+        if(graph->adjlistArr)
         {
             /*Free up the nodes*/
             for (int v = 0; v < graph->n; v++)
             {
-                struct adjlist_node *adjListPtr = graph->adjListArr[v].head;
-                while (adjListPtr)
+                struct adjlist_node *adjlistPtr = graph->adjlistArr[v].head;
+                while (adjlistPtr)
                 {
-                    struct adjlist_node *tmp = adjListPtr;
-                    adjListPtr = adjListPtr->next;
+                    struct adjlist_node *tmp = adjlistPtr;
+                    adjlistPtr = adjlistPtr->next;
                     free(tmp);
                 }
             }
             /*Free the adjacency list array*/
-            free(graph->adjListArr);
+            free(graph->adjlistArr);
         }
         /*Free the graph*/
         free(graph);
@@ -77,24 +77,24 @@ void destroyGraph(struct graph *graph){
 void addEdge(struct graph *graph, int vertex1, int vertex2){
     /* Add an edge from vertex1 to vertex2 in the adjacency list*/
     struct adjlist_node *newNode = createNode(vertex2);
-    newNode->next = graph->adjListArr[vertex1].head;
-    graph->adjListArr[vertex1].head = newNode;
-    graph->adjListArr[vertex1].num_members++;
+    newNode->next = graph->adjlistArr[vertex1].head;
+    graph->adjlistArr[vertex1].head = newNode;
+    graph->adjlistArr[vertex1].num_members++;
 
     /* Add an edge from vertex2 to vertex1 also*/
     newNode = createNode(vertex1);
-    newNode->next = graph->adjListArr[vertex2].head;
-    graph->adjListArr[vertex2].head = newNode;
-    graph->adjListArr[vertex2].num_members++;
+    newNode->next = graph->adjlistArr[vertex2].head;
+    graph->adjlistArr[vertex2].head = newNode;
+    graph->adjlistArr[vertex2].num_members++;
 }
 
 void displayAdjacencyList(struct adjlist adjlist){
-    struct adjlist_node *adjListPtr = adjlist.head;
+    struct adjlist_node *adjlistPtr = adjlist.head;
     
-    while (adjListPtr)
+    while (adjlistPtr)
     {
-        printf("%d->", adjListPtr->vertex);
-        adjListPtr = adjListPtr->next;
+        printf("%d->", adjlistPtr->vertex);
+        adjlistPtr = adjlistPtr->next;
     }
     printf("NULL\n");
 }
@@ -102,7 +102,7 @@ void displayAdjacencyList(struct adjlist adjlist){
 void displayGraph(struct graph *graph){
     for (int i = 0; i < graph->n; i++){
         printf("\n%d: ", i);
-        displayAdjacencyList(graph->adjListArr[i]);
+        displayAdjacencyList(graph->adjlistArr[i]);
     }
 }
 

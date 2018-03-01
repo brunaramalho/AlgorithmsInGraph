@@ -30,11 +30,11 @@ int* lexicographicSearch(struct graph *g){
     /* Initializing Structures */
 
     struct vertexInfo *vertexTable[g->n];
-    struct s *s;
+    struct s *s = (struct s *)malloc(sizeof(struct s));
     s->num_members = g->n;
 
     struct set *unique = (struct set *)malloc(sizeof(struct set));
-    unique->flag = 0;
+    unique->flag = false;
     unique->previous = NULL;
     unique->next = NULL;
 
@@ -108,25 +108,18 @@ int* lexicographicSearch(struct graph *g){
 
         /* Updating adjacency of choosen_vertex */
 
-        struct adjlist_node *adjListPtr = g->adjListArr[choosen_vertex].head;
-        while (adjListPtr)
+        struct set *set_flag_update[g->n]; // TODO: optimize space
+        int counter = 0;
+        
+
+        struct adjlist_node *adjlistPtr = g->adjlistArr[choosen_vertex].head;
+        while (adjlistPtr)
         {
-            int vertex = adjListPtr->vertex;
+            int vertex = adjlistPtr->vertex;
             bool future_change = true;
             
-            if(vertexTable[vertex]->setPointer->flag == 0){
-                // Create new S'
-                struct set *new_set = (struct set *)malloc(sizeof(struct set));
-                new_set->flag = 0;
-                new_set->previous = vertexTable[vertex]->setPointer->previous;
-                new_set->next = vertexTable[vertex]->setPointer;
-                vertexTable[vertex]->setPointer->previous = new_set;
-
-                if(new_set->previous == NULL) // Update head if necessary
-                    s->head = new_set;
-                else
-                    vertexTable[vertex]->setPointer->previous->next = new_set;
-
+            if(vertexTable[vertex]->setPointer->flag == false){
+                
                 /* Deleting node from original */
                 
                 vertexTable[vertex]->setPointer->vertexSet->num_members--;
@@ -151,42 +144,112 @@ int* lexicographicSearch(struct graph *g){
                     }
                 }
 
-                
+                /* Finished Deleting node from original if necessary (future_change) */
 
 
+                /* Creating new set in vertexTable:
+                    future_change = 0 means that there was only 1 node in adjlist, that is, 
+                    we would simply create another adjlist with the same vertex */
 
-                if(s->head->vertexSet->head == NULL){ // Deleting s->head because it is empty
+                if(future_change){
 
-                    s->num_members--;
+                    s->num_members++;
+    
+                    struct set *new_set = (struct set *)malloc(sizeof(struct set));
+                    new_set->flag = false;
+                    new_set->previous = vertexTable[vertex]->setPointer->previous;
+                    new_set->next = vertexTable[vertex]->setPointer;
+                    vertexTable[vertex]->setPointer->previous = new_set;
+                    vertexTable[vertex]->setPointer->flag = true;
 
-                    s->head = s->head->next;
-                    s->head->previous = NULL;
+                    set_flag_update[counter] = vertexTable[vertex]->setPointer;
+                    counter++;
+
+
+                    if(new_set->previous == NULL) // Update head if necessary
+                        s->head = new_set;
+                    else
+                        vertexTable[vertex]->setPointer->previous->next = new_set;
+
+                    /* Adding node into new_set */
+
+                    struct adjlist *new_vertexSet = (struct adjlist *)malloc(sizeof(struct adjlist));
+                    new_set->vertexSet = new_vertexSet;
+                    new_vertexSet->num_members = 1;
+                    new_vertexSet->head = vertexTable[vertex]->adjlist_node_pointer;
+                    vertexTable[vertex]->adjlist_node_pointer->next = NULL;
+                    vertexTable[vertex]->adjlist_node_pointer->previous = NULL;
+
+                    /* Finished adding node into new_set */
+
+                    
+                    /* Updating vertexTable */
+
+                    vertexTable[vertex]->setPointer = new_set;
+
+                    /* Finished updating vertexTable */
                 }
 
-                /* Finished Deleting */
-
-
-                // Add node into new_set
-
-                
-
-
-                // Update set in vertexTable
-
+                /* Finished creating new set in vertexTable */
             }
+            else{
+                /* Deleting node from original */
+                
+                vertexTable[vertex]->setPointer->vertexSet->num_members--;
+                if(vertexTable[vertex]->adjlist_node_pointer->previous == NULL){
+                    // Updating head
+                    vertexTable[vertex]->setPointer->vertexSet->head = vertexTable[vertex]->adjlist_node_pointer->next;
 
+                    if(vertexTable[vertex]->adjlist_node_pointer->next == NULL){
+                        // That will be empty, so we need to delete the whole set
+                        vertexTable[vertex]->setPointer->previous->next = vertexTable[vertex]->setPointer->next;
+                        if(vertexTable[vertex]->setPointer->next != NULL)
+                            vertexTable[vertex]->setPointer->next->previous = vertexTable[vertex]->setPointer->previous;
+                    }
+                    else{
+                        vertexTable[vertex]->adjlist_node_pointer->next->previous = NULL;
+                    }
 
-            
+                }
+                else{
+                    vertexTable[vertex]->adjlist_node_pointer->previous->next = vertexTable[vertex]->adjlist_node_pointer->next;
 
-            // Update vertexTable[??]->setPointer
+                    if(vertexTable[vertex]->adjlist_node_pointer->next != NULL){
+                        vertexTable[vertex]->adjlist_node_pointer->next->previous = vertexTable[vertex]->adjlist_node_pointer->previous;
+                    }
+                }
 
-            // do something with adjListPtr
-            
-            adjListPtr = adjListPtr->next;
+                /* Finished Deleting node from original if necessary (future_change) */
 
-            vertexTable[choosen_vertex]
-            tmp->vertex;
+                /* Adding current node into the already created new set */
+
+                vertexTable[vertex]->setPointer->previous->vertexSet->num_members++;
+                vertexTable[vertex]->setPointer->previous->vertexSet->head->previous = vertexTable[vertex]->adjlist_node_pointer;
+                vertexTable[vertex]->adjlist_node_pointer->next = vertexTable[vertex]->setPointer->previous->vertexSet->head;
+                vertexTable[vertex]->adjlist_node_pointer->previous = NULL;
+                vertexTable[vertex]->setPointer->previous->vertexSet->head = vertexTable[vertex]->adjlist_node_pointer;
+                
+                /* Updating vertexTable */
+
+                vertexTable[vertex]->setPointer = vertexTable[vertex]->setPointer->previous;
+
+                /* Finished updating vertexTable */
+
+                /* Finished adding current node */
+            }
+           
+            adjlistPtr = adjlistPtr->next;
         }
+
+        /* Updating flag all to false */
+
+        for(int x=0; x<counter; x++){
+            set_flag_update[counter]->flag = false;
+        }
+
+        /* Finished updating flag all to false */
+
+        
 
 
         /* Finished updating adjacency of choosen_vertex */
