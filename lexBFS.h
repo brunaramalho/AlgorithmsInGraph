@@ -44,7 +44,7 @@ void displaySet(struct set *set){
     }
 }
 
-int* lexicographicSearch(struct graph *g){
+int* lexBFS(struct graph *g){
     
     int *sigma = (int *)malloc(g->n * sizeof(int));
     int i = g->n + 1;

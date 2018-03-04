@@ -20,11 +20,8 @@ struct graph{
     struct adjlist *adjlistArr; /*its size will be the number of vertices in graph*/
 };
 
-
 struct adjlist_node* createNode(int v){
     struct adjlist_node *newNode = (struct adjlist_node *)malloc(sizeof(struct adjlist_node));
-    if(!newNode)
-        printf("Unable to allocate memory for new node");
 
     newNode->vertex = v;
     newNode->next = NULL;
@@ -34,14 +31,10 @@ struct adjlist_node* createNode(int v){
 
 struct graph* createGraph(int n){
     struct graph *graph = (struct graph *)malloc(sizeof(struct graph));
-    if(!graph)
-        printf("Unable to allocate memory for graph");
     graph->n = n;
 
     /* Create an array of adjacency lists*/
     graph->adjlistArr = (struct adjlist *)malloc(n * sizeof(struct adjlist));
-    if(!graph->adjlistArr)
-        printf("Unable to allocate memory for adjacency list array");
 
     for(int i = 0; i < n; i++)
     {
