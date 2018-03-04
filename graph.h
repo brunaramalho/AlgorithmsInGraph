@@ -1,6 +1,8 @@
 /*graph.h*/
 #ifndef GRAPH_H
 #define GRAPH_H
+#include <stdio.h>
+#include <stdlib.h>
 
 struct adjlist_node{
     int vertex;
@@ -90,7 +92,7 @@ void addEdge(struct graph *graph, int vertex1, int vertex2){
 
 void displayAdjacencyList(struct adjlist adjlist){
     struct adjlist_node *adjlistPtr = adjlist.head;
-    
+
     while (adjlistPtr)
     {
         printf("%d->", adjlistPtr->vertex);
@@ -104,6 +106,7 @@ void displayGraph(struct graph *graph){
         printf("\n%d: ", i);
         displayAdjacencyList(graph->adjlistArr[i]);
     }
+    printf("\n");
 }
 
 #endif
