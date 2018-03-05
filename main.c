@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "graph.h"
 #include "lexBFS.h"
+#include "eep.h"
 
 void main()
 {
@@ -13,20 +14,6 @@ void main()
     // addEdge(g, 1, 4);
     // addEdge(g, 2, 3);
     // addEdge(g, 3, 4);
-
-    // printf("GRAPH\n");
-    // displayGraph(g);
-
-    // int *sigma = lexBFS(g);
-
-    // printf("SIGMA\n");
-
-    // for(int i=0; i< g->n - 1; i++){
-    //     printf("%d -> ", sigma[i]);
-    // }
-    // printf("%d\n", sigma[g->n - 1]);
-
-    // destroyGraph(g);
 
     struct graph *g = createGraph(8);
     addEdge(g, 0, 1);
@@ -45,7 +32,8 @@ void main()
     printf("GRAPH\n");
     displayGraph(g);
 
-    int *sigma = lexBFS(g);
+    struct output result = lexBFS(g);
+    int *sigma = result.sigma;
 
     printf("SIGMA\n");
 

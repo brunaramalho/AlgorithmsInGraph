@@ -29,6 +29,10 @@ struct setFlagUpdate{
     struct setFlagUpdate *next;
 };
 
+struct output{
+    int *sigma;
+    int *index;
+};
 
 void displaySet(struct set *set){
     struct set *setPtr = set;
@@ -44,9 +48,10 @@ void displaySet(struct set *set){
     }
 }
 
-int* lexBFS(struct graph *g){
+struct output lexBFS(struct graph *g){
     
     int *sigma = (int *)malloc(g->n * sizeof(int));
+    int *index = (int *)malloc(g->n * sizeof(int));
     int i = g->n + 1;
 
     /* Initializing Structures */
@@ -129,6 +134,7 @@ int* lexBFS(struct graph *g){
 
         i--;
         sigma[i-1] = choosen_vertex;
+        index[choosen_vertex] = i-1;
         vertexTable[choosen_vertex].index = i;
 
         /* Finished updating labels */
@@ -299,8 +305,13 @@ int* lexBFS(struct graph *g){
     }
 
     sigma[0] = s->head->vertexSet->head->vertex;
+    index[s->head->vertexSet->head->vertex] = 0;
     
-    return sigma;
+    struct output result;
+    result.index = index;
+    result.sigma = sigma;
+
+    return result;
 }
 
 #endif
