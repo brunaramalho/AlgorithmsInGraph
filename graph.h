@@ -25,6 +25,7 @@ struct adjlist_node* createNode(int v){
 
     newNode->vertex = v;
     newNode->next = NULL;
+    newNode->previous = NULL;
 
     return newNode;
 }
@@ -73,12 +74,19 @@ void addEdge(struct graph *graph, int vertex1, int vertex2){
     /* Add an edge from vertex1 to vertex2 in the adjacency list*/
     struct adjlist_node *newNode = createNode(vertex2);
     newNode->next = graph->adjlistArr[vertex1].head;
+    newNode->previous = NULL;
+    if(graph->adjlistArr[vertex1].head != NULL)
+        graph->adjlistArr[vertex1].head->previous = newNode;
     graph->adjlistArr[vertex1].head = newNode;
     graph->adjlistArr[vertex1].num_members++;
+    
 
     /* Add an edge from vertex2 to vertex1 also*/
     newNode = createNode(vertex1);
     newNode->next = graph->adjlistArr[vertex2].head;
+    newNode->previous = NULL;
+    if(graph->adjlistArr[vertex1].head != NULL)
+        graph->adjlistArr[vertex1].head->previous = newNode;
     graph->adjlistArr[vertex2].head = newNode;
     graph->adjlistArr[vertex2].num_members++;
 }
