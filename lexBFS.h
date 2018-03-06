@@ -31,7 +31,7 @@ struct setFlagUpdate{
 
 struct output{
     int *sigma;
-    int *index;
+    int *index; // equivalent: sigma_{-1}
 };
 
 void displaySet(struct set *set){

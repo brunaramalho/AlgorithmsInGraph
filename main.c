@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "graph.h"
@@ -23,7 +24,7 @@ void main()
     addEdge(g, 1, 3);
     addEdge(g, 1, 4);
     addEdge(g, 2, 5);
-    addEdge(g, 2, 4);
+    //addEdge(g, 2, 4);
     addEdge(g, 3, 4);
     addEdge(g, 5, 4);
     addEdge(g, 1, 6);
@@ -32,15 +33,7 @@ void main()
     printf("GRAPH\n");
     displayGraph(g);
 
-    struct output result = lexBFS(g);
-    int *sigma = result.sigma;
-
-    printf("SIGMA\n");
-
-    for(int i=0; i< g->n - 1; i++){
-        printf("%d -> ", sigma[i]);
-    }
-    printf("%d\n", sigma[g->n - 1]);
+    isChordal(g);
 
     destroyGraph(g);
 }
