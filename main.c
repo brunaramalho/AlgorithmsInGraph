@@ -4,6 +4,7 @@
 #include "graph.h"
 #include "lexBFS.h"
 #include "eep.h"
+#include "chordal.h"
 
 void main()
 {

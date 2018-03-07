@@ -19,9 +19,9 @@ bool isChordal(struct graph *g){
 
     
 	if(eep(g, result.sigma, result.index))
-        printf("It's a chordal graph!\n");
+        printf("\nIt's a chordal graph!\n");
     else
-        printf("It's not a chordal graph!\n");
+        printf("\nIt's not a chordal graph!\n");
 }
 
 

@@ -117,7 +117,7 @@ bool eep(struct graph *g, int sigma[], int index[]){
 
         /* Comparing adjToCheck and adjacency of choosen_vertex */
 
-        // solução encontrada para consumo de tempo linear
+        // solução encontrada para consumo de tempo linear -> realmente garante linearidade? Na alocação ele inicializa tudo com 0?
         bool *neighborhood = (bool *)malloc(g->n * sizeof(bool));
 
         adjlistPtr = g->adjlistArr[choosen_vertex].head;
