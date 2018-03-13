@@ -85,13 +85,12 @@ bool eep(struct graph *g, int sigma[], int index[]){
 
             /* Adding each vertex of monotonous adjacency, excepting closestVertex, to adjToCheck */
 
-            adjToCheck[closestVertex].num_members++;
-            
             adjlistPtr = monotonousAdj->head;
             while (adjlistPtr)
             {
                 if(adjlistPtr->vertex != closestVertex){
-                    
+                    adjToCheck[closestVertex].num_members++;
+
                     struct adjlist_node *newNode = (struct adjlist_node *)malloc(sizeof(struct adjlist_node));
                     newNode->vertex = adjlistPtr->vertex;
                     newNode->previous = NULL;
@@ -110,14 +109,16 @@ bool eep(struct graph *g, int sigma[], int index[]){
             }
 
             /* Finished completing adjToCheck */
-        }
         
-        printf("Adjacency to check: \t");
-        displayAdjacencyList(*adjToCheck);
+            printf("Adjacency to future check - vertex %d: \t", closestVertex);
+            displayAdjacencyList(adjToCheck[closestVertex]);
+        }
+
+        printf("Adjacency to check now - vertex %d: \t", choosen_vertex);
+        displayAdjacencyList(adjToCheck[choosen_vertex]);
 
         /* Comparing adjToCheck and adjacency of choosen_vertex */
 
-        // solução encontrada para consumo de tempo linear -> realmente garante linearidade? Na alocação ele inicializa tudo com 0?
         bool *neighborhood = (bool *)malloc(g->n * sizeof(bool));
 
         adjlistPtr = g->adjlistArr[choosen_vertex].head;
