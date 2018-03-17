@@ -110,4 +110,12 @@ void displayGraph(struct graph *graph){
     printf("\n");
 }
 
+void displayRepresentationGraph(struct graph *graph, int sigma[]){
+    for (int i = 0; i < graph->n; i++){
+        printf("\n%d: ", sigma[i]);
+        displayAdjacencyList(graph->adjlistArr[sigma[i]]);
+    }
+    printf("\n");
+}
+
 #endif

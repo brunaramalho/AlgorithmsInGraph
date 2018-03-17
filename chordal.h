@@ -21,8 +21,17 @@ bool isChordal(struct graph *g){
 
     printf("EEP TEST\n");
 
-	if(eep(g, result.sigma, result.index))
+    struct graph *g_representation = createGraph(g->n);
+
+	if(eep(g, result.sigma, result.index,g_representation)){
         printf("\nIt's a chordal graph!\n");
+
+        printf("\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n");
+
+        printf("Representation by Monotone Adjacency Sets\n");
+
+        displayRepresentationGraph(g_representation, result.sigma);
+    }
     else
         printf("\nIt's not a chordal graph!\n");
 }

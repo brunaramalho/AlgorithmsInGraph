@@ -9,12 +9,9 @@
 void main()
 {
     int n, node1, node2;
-
     printf("n :\t");
     scanf("%d", &n);
-
     struct graph *g = createGraph(n);
-
     while(1){
         printf("### CREATING EDGES: enter like 0 1\n");
         printf("Enter %d to finish\n", n);

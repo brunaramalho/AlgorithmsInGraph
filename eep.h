@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-bool eep(struct graph *g, int sigma[], int index[]){
+bool eep(struct graph *g, int sigma[], int index[], struct graph *g_representation){
     
     bool eep = true;
 
@@ -27,7 +27,7 @@ bool eep(struct graph *g, int sigma[], int index[]){
         
         printf("Loop %d: vertex %d in sigma\n", i, choosen_vertex);
 
-        /* Finding monotonous adjacency of vertex in sigma[i] */
+        /* Finding monotone adjacency of vertex in sigma[i] */
 
         struct adjlist *monotonousAdj = (struct adjlist *)malloc(sizeof(struct adjlist));
         monotonousAdj->num_members = 0;
@@ -61,7 +61,9 @@ bool eep(struct graph *g, int sigma[], int index[]){
         printf("Adjacency list of vertex %d:\t", choosen_vertex);
         displayAdjacencyList(*monotonousAdj);
         
-        /* Finisehd finding monotonous adjacency */
+        g_representation->adjlistArr[choosen_vertex] = *monotonousAdj;
+
+        /* Finisehd finding monotone adjacency */
 
         if(monotonousAdj->num_members > 0){
             
@@ -83,7 +85,7 @@ bool eep(struct graph *g, int sigma[], int index[]){
 
             /* Finished finding the closest vertex */
 
-            /* Adding each vertex of monotonous adjacency, excepting closestVertex, to adjToCheck */
+            /* Adding each vertex of monotone adjacency, excepting closestVertex, to adjToCheck */
 
             adjlistPtr = monotonousAdj->head;
             while (adjlistPtr)
@@ -142,6 +144,8 @@ bool eep(struct graph *g, int sigma[], int index[]){
 
         /* Finished comparing adjacencies */
     }
+
+    g_representation->adjlistArr[sigma[0]] = g->adjlistArr[sigma[0]];
 
     return eep;
 }
