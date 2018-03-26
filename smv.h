@@ -5,51 +5,29 @@
 #include <string.h>
 #include "graph.h"
 
-struct smvSet{
+struct smv{
 	struct adjlist *smv;
 	int multiplicity;
-	struct smvSet *next;
-	struct smvSet *previous;
 };
 
-struct qSet{
-	struct adjlist *q;
-	struct qSet *next;
-	struct qSet *previous;
-};
-
-struct pointer{
-	struct qSet *qSetPointer;
-	struct smvSet *smvSetPointer;
-};
-
-struct smvSet* smv(struct graph *g, int sigma[], int index[]){
+struct smv* smv(struct graph *g, int sigma[], int index[]){
 	int q=1,j=0;
 	int *position = (int *)malloc(g->n * sizeof(int));
 	int *last = (int *)malloc(g->n * sizeof(int));
-	struct qSet *qSetHead = (struct qSet *)malloc(sizeof(struct qSet));
-	struct smvSet *smvSetHead = (struct smvSet *)malloc(sizeof(struct smvSet));
-	struct pointer *pointers = (struct pointer *)malloc(g->n * sizeof(struct pointer));
+	struct adjlist *qSet = (struct adjlist *)malloc(g->n * sizeof(struct adjlist));
+	struct smv *smvSet = (struct smv *)malloc(sizeof(struct smv));
 
-	qSetHead->next = NULL;
-	qSetHead->previous = NULL;
-	struct adjlist *firstAdjlist = (struct adjlist *)malloc(sizeof(struct adjlist));
 	struct adjlist_node *firstNode = (struct adjlist_node *)malloc(sizeof(struct adjlist_node));
 	firstNode->next = NULL;
 	firstNode->previous = NULL;
 	firstNode->vertex = sigma[g->n];
-	firstAdjlist->head = firstNode;
-	firstAdjlist->num_members = 1;
+	qSet[0].head = firstNode;
+	qSet[0].num_members = 1;
 	
-	qSetHead->q = firstAdjlist;
 	position[sigma[g->n]] = 1;
-	pointers[0].qSetPointer = qSetHead;
 	
-	smvSetHead->next = NULL;
-	smvSetHead->previous = NULL;
-	smvSetHead->smv = NULL;
-	smvSetHead->multiplicity = 0;
-	pointers[0].smvSetPointer = smvSetHead;
+	smvSet[0].smv = NULL;
+	smvSet[0].multiplicity = 0;
 
 	for(int i = 0; i < g->n; i++){
 		last[i] = 0;
@@ -114,14 +92,9 @@ struct smvSet* smv(struct graph *g, int sigma[], int index[]){
 
 	        int k = position[closestVertex];
 
-			if(monotonousAdj->num_members < pointers[k-1].qSetPointer->q->num_members){
+			if(monotonousAdj->num_members < qSet[k-1].num_members){
 				
 				q++;
-
-				struct qSet *qSetNew = (struct qSet *)malloc(sizeof(struct qSet));
-				qSetNew->next = NULL;
-				qSetNew->previous = pointers[q-2].qSetPointer;
-				pointers[q-2].qSetPointer->next = qSetNew;
 
 				/* Adding v_i to monotonous adjacency of v_i */
 
@@ -140,8 +113,7 @@ struct smvSet* smv(struct graph *g, int sigma[], int index[]){
 
                 /* Finished adding v_i to monotonous adjacency of v_i */
 
-				qSetNew->q = newAdj;
-				pointers[q-1].qSetPointer = qSetNew;
+				qSet[q-1] = *newAdj;
 
 				printf("Creating another Maximal Click Q_%d:\t", q);
 				displayAdjacencyList(*newAdj);
@@ -153,7 +125,7 @@ struct smvSet* smv(struct graph *g, int sigma[], int index[]){
 
 				bool theSame = true;
 
-				if(pointers[c].smvSetPointer->smv == NULL){
+				if(smvSet[c].smv == NULL){
 					theSame = false;
 				}
 				else{
@@ -162,7 +134,7 @@ struct smvSet* smv(struct graph *g, int sigma[], int index[]){
 
 					bool *auxiliar = (bool *)malloc(g->n * sizeof(bool));
 
-			        adjlistPtr = pointers[c].smvSetPointer->smv->head;
+			        adjlistPtr = smvSet[c].smv->head;
 			        while (adjlistPtr)
 			        {
 			            auxiliar[adjlistPtr->vertex] = true;    
@@ -192,44 +164,39 @@ struct smvSet* smv(struct graph *g, int sigma[], int index[]){
 					printf("Creating another smv S_%d:\t", j);
 					displayAdjacencyList(*(newSmv));
 
-					struct smvSet *newSmvSet = (struct smvSet *)malloc(sizeof(struct smvSet));
-					newSmvSet->smv = newSmv;
-					newSmvSet->multiplicity = 1;
-					newSmvSet->next = NULL;
-					newSmvSet->previous = pointers[j-1].smvSetPointer;
-					pointers[j-1].smvSetPointer->next = newSmvSet;
-					pointers[j].smvSetPointer = newSmvSet;
+					smvSet[j].smv = newSmv;
+					smvSet[j].multiplicity = 1;
 
 					last[tam] = j;
 				}
 				else{
 					printf("Upgrading smv S_%d:\t", c);
-					pointers[c].smvSetPointer->multiplicity++;
+					smvSet[c].multiplicity++;
 				}
 			}
 			else{
 				/* Adding v_i to Q_k */
 
-				pointers[k-1].qSetPointer->q->num_members++;
+				qSet[k-1].num_members++;
 
 				struct adjlist_node *newNode = (struct adjlist_node *)malloc(sizeof(struct adjlist_node));
 			    newNode->vertex = sigma[i];
-			    newNode->next = pointers[k-1].qSetPointer->q->head;
+			    newNode->next = qSet[k-1].head;
 			    newNode->previous = NULL;
-			    pointers[k-1].qSetPointer->q->head->previous = newNode;
-			    pointers[k-1].qSetPointer->q->head = newNode;
+			    qSet[k-1].head->previous = newNode;
+			    qSet[k-1].head = newNode;
 
 				/* Finished adding v_i to Q_k */
 
 				position[sigma[i]] = k;
 				
 				printf("Upgrading Maximal Click Q_%d:\t", k);
-				displayAdjacencyList(*(pointers[k-1].qSetPointer->q));
+				displayAdjacencyList(qSet[k-1]);
 			}
 		}
 	}
 
-	return smvSetHead->next;
+	return smvSet;
 }
 
 
