@@ -58,7 +58,7 @@ bool eep(struct graph *g, int sigma[], int index[], struct graph *g_representati
             adjlistPtr = adjlistPtr->next;
         }
 
-        printf("Adjacency list of vertex %d:\t", choosen_vertex);
+        printf("Monotone Adjacency list of vertex %d:\t", choosen_vertex);
         displayAdjacencyList(*monotonousAdj);
         
         g_representation->adjlistArr[choosen_vertex] = *monotonousAdj;

@@ -5,6 +5,7 @@
 #include "graph.h"
 #include "lexBFS.h"
 #include "eep.h"
+#include "smv.h"
 
 bool isChordal(struct graph *g){
 	
@@ -31,6 +32,19 @@ bool isChordal(struct graph *g){
         printf("Representation by Monotone Adjacency Sets\n");
 
         displayRepresentationGraph(g_representation, result.sigma);
+
+        printf("\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n");
+
+        struct smvSet *smvHead = smv(g, result.sigma, result.index);
+
+        struct smvSet *smvSetPtr = smvHead;
+        int counter = 0;
+        while(smvSetPtr){
+            printf("\nS_%d with multiplicity %d:\t", ++counter, smvSetPtr->multiplicity);
+            displayAdjacencyList(*(smvSetPtr->smv));
+            smvSetPtr = smvSetPtr->next;
+        }
+        printf("\n");
     }
     else
         printf("\nIt's not a chordal graph!\n");
