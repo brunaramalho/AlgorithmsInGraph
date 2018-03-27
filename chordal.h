@@ -6,6 +6,7 @@
 #include "lexBFS.h"
 #include "eep.h"
 #include "smv.h"
+#include "strictlyChordal.h"
 
 bool isChordal(struct graph *g){
 	
@@ -44,6 +45,8 @@ bool isChordal(struct graph *g){
             counter++;
         }
         printf("\n");
+
+        isStrictlyChordal(g, smvSet);
     }
     else
         printf("\nIt's not a chordal graph!\n");
