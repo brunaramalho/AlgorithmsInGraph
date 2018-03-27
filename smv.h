@@ -15,7 +15,7 @@ struct smv* smv(struct graph *g, int sigma[], int index[]){
 	int *position = (int *)malloc(g->n * sizeof(int));
 	int *last = (int *)malloc(g->n * sizeof(int));
 	struct adjlist *qSet = (struct adjlist *)malloc(g->n * sizeof(struct adjlist));
-	struct smv *smvSet = (struct smv *)malloc(sizeof(struct smv));
+	struct smv *smvSet = (struct smv *)malloc(g->n * sizeof(struct smv));
 
 	struct adjlist_node *firstNode = (struct adjlist_node *)malloc(sizeof(struct adjlist_node));
 	firstNode->next = NULL;

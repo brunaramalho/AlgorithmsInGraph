@@ -37,10 +37,11 @@ bool isChordal(struct graph *g){
 
         struct smv *smvSet = smv(g, result.sigma, result.index);
 
-        int counter = 0;
+        int counter = 1;
         while(smvSet[counter].smv){
-            printf("\nS_%d with multiplicity %d:\t", ++counter, smvSet[counter-1].multiplicity);
-            displayAdjacencyList(*(smvSet[counter-1].smv));
+            printf("\nS_%d with multiplicity %d:\t", counter, smvSet[counter].multiplicity);
+            displayAdjacencyList(*(smvSet[counter].smv));
+            counter++;
         }
         printf("\n");
     }
