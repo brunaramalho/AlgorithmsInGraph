@@ -5,7 +5,12 @@
 #include "graph.h"
 #include "smv.h"
 
-bool isStrictlyChordal(struct graph *g, struct smv* smvSet){
+struct result{
+	bool isStrictlyChordal;
+	int vertexCounter;
+};
+
+struct result isStrictlyChordal(struct graph *g, struct smv* smvSet){
 
 	bool isStrictlyChordal = true;
 	bool *appeared = (bool *)malloc(g->n * sizeof(int));
@@ -15,12 +20,15 @@ bool isStrictlyChordal(struct graph *g, struct smv* smvSet){
 		appeared[counter] = false;
 
 	counter = 1;
+	int vertexCounter = 0; // number of vertices in smvs for strictly interval algorithm
     while(smvSet[counter].smv && isStrictlyChordal){
 
     	struct adjlist_node *adjlistPtr = smvSet[counter].smv->head;
 	    while (adjlistPtr)
 	    {
-	        if(appeared[adjlistPtr->vertex] != false){
+			vertexCounter++;
+
+	        if(appeared[adjlistPtr->vertex]){
 	        	isStrictlyChordal = false;
 	        	break;
 	        }
@@ -40,7 +48,11 @@ bool isStrictlyChordal(struct graph *g, struct smv* smvSet){
     else
     	printf("\nIt's not a strictly chordal graph!\n");
 
-	return isStrictlyChordal;
+	struct result output;
+	output.isStrictlyChordal = isStrictlyChordal;
+	output.vertexCounter = vertexCounter;
+
+    return output;
 }
 
 #endif

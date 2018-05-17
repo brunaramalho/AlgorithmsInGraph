@@ -7,6 +7,7 @@
 #include "eep.h"
 #include "smv.h"
 #include "strictlyChordal.h"
+#include "strictlyInterval.h"
 
 bool isChordal(struct graph *g){
 	
@@ -46,7 +47,10 @@ bool isChordal(struct graph *g){
         }
         printf("\n");
 
-        isStrictlyChordal(g, smvSet);
+        struct result output = isStrictlyChordal(g, smvSet);
+        
+        if(output.isStrictlyChordal)
+            isStrictlyInterval(g, smvSet, output.vertexCounter);
     }
     else
         printf("\nIt's not a chordal graph!\n");

@@ -20,11 +20,11 @@ struct smv* smv(struct graph *g, int sigma[], int index[]){
 	struct adjlist_node *firstNode = (struct adjlist_node *)malloc(sizeof(struct adjlist_node));
 	firstNode->next = NULL;
 	firstNode->previous = NULL;
-	firstNode->vertex = sigma[g->n];
+	firstNode->vertex = sigma[g->n-1];
 	qSet[0].head = firstNode;
 	qSet[0].num_members = 1;
 	
-	position[sigma[g->n]] = 1;
+	position[sigma[g->n - 1]] = 1;
 	
 	smvSet[0].smv = NULL;
 	smvSet[0].multiplicity = 0;
