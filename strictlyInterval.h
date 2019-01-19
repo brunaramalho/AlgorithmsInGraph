@@ -82,4 +82,91 @@ bool isStrictlyInterval(struct graph *g, struct smv* smvSet, int vertexCounter){
 	return isStrictlyInterval;
 }
 
+// --------------------- PROPOSED ALGORITHM ---------------------
+
+// Make the derived graph of critical clique graph of G, without the need of making the critical clique graph of G
+struct graph* derivedGraphOfCriticalClique(struct graph *g, struct smv* smvSet, int smvCounter){
+    
+    struct graph *derived = createGraph(smvCounter);
+    
+    int mapping[g->n]; // matrix for the new index value in derived graph foreach vertex
+    
+    bool inSmv[g->n];
+    for(int i=0; i<g->n; i++)
+        inSmv[i] = false;
+
+    int vertexIndex = 0;
+    int counter = 1;
+
+    while(smvSet[counter].smv){
+
+        struct adjlist_node *firstNode = smvSet[counter].smv->head;
+        mapping[firstNode->vertex] = vertexIndex;
+
+        struct adjlist_node *adjnodePtr = g->adjlistArr[firstNode->vertex].head;
+        while (adjnodePtr)
+        {
+            if(inSmv[adjnodePtr->vertex]){
+                addEdge(derived, vertexIndex, mapping[adjnodePtr->vertex]);
+            }
+            adjnodePtr = adjnodePtr->next;
+        }
+        inSmv[firstNode->vertex] = true;
+        
+        vertexIndex++;
+        counter++;
+    }
+
+    return derived;
+}
+
+bool isPath(struct graph *g){
+    bool isPath = true;
+
+    if(g->n >= 3){
+        int leafCounter = 0;
+
+        for(int i=0; i<g->n; i++){
+            int adjListSize = g->adjlistArr[i].num_members;
+            printf("Adjacent List size of vertex %d: %d\n", i, adjListSize);
+            if(adjListSize == 1)
+                leafCounter++;
+            if(adjListSize > 2){
+                isPath = false;
+                break;
+            }
+        }
+
+        if(leafCounter != 2)
+            isPath = false;
+    }
+
+    return isPath; 
+}
+
+bool isStrictlyIntervalProposed(struct graph *g, struct smv* smvSet){
+  
+    printf("\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n");
+
+    int smvCounter = 0;
+    while(smvSet[smvCounter+1].smv){
+        smvCounter++;
+    }
+
+    printf("Number of SMVs: %d\n", smvCounter);
+
+    struct graph *derived = derivedGraphOfCriticalClique(g, smvSet, smvCounter);
+
+    displayGraph(derived);
+
+	bool isStrictlyInterval = isPath(derived);
+
+    if(isStrictlyInterval)
+    	printf("\nIt's a strictly interval graph!\n");
+    else
+    	printf("\nIt's not a strictly interval graph!\n");
+
+	return isStrictlyInterval;
+}
+
 #endif

@@ -49,8 +49,13 @@ bool isChordal(struct graph *g){
 
         struct result output = isStrictlyChordal(g, smvSet);
         
-        if(output.isStrictlyChordal)
+        if(output.isStrictlyChordal){
+            printf("Original Algorithm:\n");
             isStrictlyInterval(g, smvSet, output.vertexCounter);
+
+            printf("Proposed Algorithm:\n");
+            isStrictlyIntervalProposed(g, smvSet);
+        }
     }
     else
         printf("\nIt's not a chordal graph!\n");
