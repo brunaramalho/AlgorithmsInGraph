@@ -70,6 +70,17 @@ void destroyGraph(struct graph *graph){
     }
 }
 
+void addSingleEdge(struct graph *graph, int vertex1, int vertex2){
+    /* Add an edge from vertex1 to vertex2 in the adjacency list*/
+    struct adjlist_node *newNode = createNode(vertex2);
+    newNode->next = graph->adjlistArr[vertex1].head;
+    newNode->previous = NULL;
+    if(graph->adjlistArr[vertex1].head != NULL)
+        graph->adjlistArr[vertex1].head->previous = newNode;
+    graph->adjlistArr[vertex1].head = newNode;
+    graph->adjlistArr[vertex1].num_members++;
+}
+
 void addEdge(struct graph *graph, int vertex1, int vertex2){
     /* Add an edge from vertex1 to vertex2 in the adjacency list*/
     struct adjlist_node *newNode = createNode(vertex2);

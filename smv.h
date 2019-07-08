@@ -68,8 +68,8 @@ struct smv* smv(struct graph *g, int sigma[], int index[]){
             adjlistPtr = adjlistPtr->next;
         }
 
-        printf("Monotone Adjacency list of vertex %d:\t", choosen_vertex);
-        displayAdjacencyList(*monotonousAdj);
+        // printf("Monotone Adjacency list of vertex %d:\t", choosen_vertex);
+        // displayAdjacencyList(*monotonousAdj);
         
         if(monotonousAdj->num_members > 0){
 	        /* Finding the closest vertex to sigma[i] */
@@ -86,7 +86,7 @@ struct smv* smv(struct graph *g, int sigma[], int index[]){
 	        }
 
 	        int closestVertex = sigma[smallestPosition];
-	        printf("Closest vertex: %d\n", closestVertex);
+	        // printf("Closest vertex: %d\n", closestVertex);
 
 	        /* Finished finding the closest vertex */
 
@@ -115,8 +115,8 @@ struct smv* smv(struct graph *g, int sigma[], int index[]){
 
 				qSet[q-1] = *newAdj;
 
-				printf("Creating another Maximal Click Q_%d:\t", q);
-				displayAdjacencyList(*newAdj);
+				// printf("Creating another Maximal Click Q_%d:\t", q);
+				// displayAdjacencyList(*newAdj);
 
 				position[sigma[i]] = q;
 				
@@ -161,8 +161,8 @@ struct smv* smv(struct graph *g, int sigma[], int index[]){
 					struct adjlist *newSmv = (struct adjlist *)malloc(sizeof(struct adjlist));
 					memcpy(newSmv, monotonousAdj, sizeof(struct adjlist));
 
-					printf("Creating another smv S_%d:\t", j);
-					displayAdjacencyList(*(newSmv));
+					// printf("Creating another smv S_%d:\t", j);
+					// displayAdjacencyList(*(newSmv));
 
 					smvSet[j].smv = newSmv;
 					smvSet[j].multiplicity = 1;
@@ -170,7 +170,7 @@ struct smv* smv(struct graph *g, int sigma[], int index[]){
 					last[tam] = j;
 				}
 				else{
-					printf("Upgrading smv S_%d:\t", c);
+					// printf("Upgrading smv S_%d:\t", c);
 					smvSet[c].multiplicity++;
 				}
 			}
@@ -190,8 +190,8 @@ struct smv* smv(struct graph *g, int sigma[], int index[]){
 
 				position[sigma[i]] = k;
 				
-				printf("Upgrading Maximal Click Q_%d:\t", k);
-				displayAdjacencyList(qSet[k-1]);
+				// printf("Upgrading Maximal Click Q_%d:\t", k);
+				// displayAdjacencyList(qSet[k-1]);
 			}
 		}
 	}

@@ -25,7 +25,7 @@ bool eep(struct graph *g, int sigma[], int index[], struct graph *g_representati
     for(int i=1; i < g->n; i++){
         int choosen_vertex = sigma[i];
         
-        printf("Loop %d: vertex %d in sigma\n", i, choosen_vertex);
+        // printf("Loop %d: vertex %d in sigma\n", i, choosen_vertex);
 
         /* Finding monotone adjacency of vertex in sigma[i] */
 
@@ -58,8 +58,8 @@ bool eep(struct graph *g, int sigma[], int index[], struct graph *g_representati
             adjlistPtr = adjlistPtr->next;
         }
 
-        printf("Monotone Adjacency list of vertex %d:\t", choosen_vertex);
-        displayAdjacencyList(*monotonousAdj);
+        // printf("Monotone Adjacency list of vertex %d:\t", choosen_vertex);
+        // displayAdjacencyList(*monotonousAdj);
         
         g_representation->adjlistArr[choosen_vertex] = *monotonousAdj;
 
@@ -81,7 +81,7 @@ bool eep(struct graph *g, int sigma[], int index[], struct graph *g_representati
             }
 
             int closestVertex = sigma[smallestPosition];
-            printf("Closest vertex: %d\n", closestVertex);
+            // printf("Closest vertex: %d\n", closestVertex);
 
             /* Finished finding the closest vertex */
 
@@ -112,12 +112,12 @@ bool eep(struct graph *g, int sigma[], int index[], struct graph *g_representati
 
             /* Finished completing adjToCheck */
         
-            printf("Adjacency to future check - vertex %d: \t", closestVertex);
-            displayAdjacencyList(adjToCheck[closestVertex]);
+            // printf("Adjacency to future check - vertex %d: \t", closestVertex);
+            // displayAdjacencyList(adjToCheck[closestVertex]);
         }
 
-        printf("Adjacency to check now - vertex %d: \t", choosen_vertex);
-        displayAdjacencyList(adjToCheck[choosen_vertex]);
+        // printf("Adjacency to check now - vertex %d: \t", choosen_vertex);
+        // displayAdjacencyList(adjToCheck[choosen_vertex]);
 
         /* Comparing adjToCheck and adjacency of choosen_vertex */
 

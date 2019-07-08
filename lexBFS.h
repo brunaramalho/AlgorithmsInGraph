@@ -106,11 +106,11 @@ struct output lexBFS(struct graph *g){
 
     for(k=0; k < g->n - 1; k++){
         
-        printf("### %dº loop\n", k+1);
+        // printf("### %dº loop\n", k+1);
 
         int choosen_vertex = s->head->vertexSet->head->vertex;
 
-        printf("Choosen vertex: %d\n", choosen_vertex);
+        // printf("Choosen vertex: %d\n", choosen_vertex);
 
         /* Deleting choosen_vertex of s */
 
@@ -153,7 +153,7 @@ struct output lexBFS(struct graph *g){
             
             if(vertexTable[vertex].index == 0){ // Only the ones not already choosen
 
-                printf("Updating label of vertex %d\n", vertex);
+                // printf("Updating label of vertex %d\n", vertex);
                 if(vertexTable[vertex].setPointer->flag == false){
                     
                     /* Deleting node from original */        
@@ -300,8 +300,8 @@ struct output lexBFS(struct graph *g){
 
         /* Finished updating adjacency of choosen_vertex */
         
-        displaySet(s->head);
-        printf("\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n");
+        // displaySet(s->head);
+        // printf("\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n");
     }
 
     sigma[0] = s->head->vertexSet->head->vertex;
