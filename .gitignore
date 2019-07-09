@@ -3,3 +3,7 @@ main
 .vscode
 a.out
 node_modules/
+
+reconhecimentoBloco
+reconhecimentoCordal
+static

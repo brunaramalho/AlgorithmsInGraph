@@ -53,7 +53,7 @@ void main(int argc, char *argv[]){
     // displayGraph(g);
 
     if(isBlock(g))
-        printf("É Bloco!");
+        printf("3");
     else
-        printf("Não é Bloco!");
+        printf("4");
 }

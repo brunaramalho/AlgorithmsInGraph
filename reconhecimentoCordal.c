@@ -24,7 +24,7 @@ void main(int argc, char *argv[]){
     // displayGraph(g);
 
     if(isChordal(g))
-        printf("É Cordal!");
+        printf("1");
     else
-        printf("Não é Cordal!");
+        printf("2");
 }
