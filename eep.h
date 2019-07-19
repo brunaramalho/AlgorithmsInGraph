@@ -22,7 +22,7 @@ bool eep(struct graph *g, int sigma[], int index[], struct graph *g_representati
     
     /* Traveling around the vertices of sigma */
 
-    for(int i=1; i < g->n; i++){
+    for(int i=0; i < g->n; i++){
         int choosen_vertex = sigma[i];
         
         // printf("Loop %d: vertex %d in sigma\n", i, choosen_vertex);
