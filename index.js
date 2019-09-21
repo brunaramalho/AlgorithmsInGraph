@@ -12,6 +12,15 @@ var allowCrossDomain = function(req, res, next) {
 }
 app.use(allowCrossDomain); 
 
+app.post('/dynamic', (req, res) => {
+  console.log(req.body);
+  let command = './dynamic ' + req.body.args;
+  console.log(command);
+  exec(command, (error, stdout, stderr) => {
+    res.json({ output: stdout });
+  });
+});
+
 app.post('/static', (req, res) => {
   console.log(req.body);
   let command = './static ' + req.body.args;
@@ -41,6 +50,7 @@ app.post('/block', (req, res) => {
 
 app.listen(3000, () => {
   execSync('gcc static.c -o static');
+  execSync('g++ dynamicBlock.cpp -o dynamic');
   execSync('gcc reconhecimentoBloco.c -o reconhecimentoBloco');
   execSync('gcc reconhecimentoCordal.c -o reconhecimentoCordal');
   console.log('Listening on port 3000');
